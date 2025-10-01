@@ -1,0 +1,9 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# Distribution folders
+dist/
+build/
+*.egg-info/

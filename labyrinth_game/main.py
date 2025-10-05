@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from labyrinth_game.constants import ROOMS
-from labyrinth_game.utils import describe_current_room
+from labyrinth_game.utils import describe_current_room, attempt_open_treasure, solve_puzzle
 from labyrinth_game.player_actions import show_inventory, move_player, take_item
 
 def main():
@@ -36,7 +36,20 @@ def main():
                 else:
                     print("Укажите предмет, который хотите взять")
 
-            case 'quit' | 'exit' | 'выход':
+            case 'solve':
+                if game_state['current_room'] == 'treasure_room':
+                    attempt_open_treasure(game_state)
+                else:
+                    solve_puzzle(game_state)
+            case 'use':
+                if arg == 'treasure_chest' and game_state['current_room'] == 'treasure_room':
+                    attempt_open_treasure(game_state)
+                else:
+                    print("У вас нет нужного предмета для treasure_room.")
+
+
+
+            case 'quit':
                 print("Вы покидаете лабиринт.")
                 game_state['game_over'] = True
 

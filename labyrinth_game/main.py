@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 from labyrinth_game.constants import ROOMS
 from labyrinth_game.utils import describe_current_room
+from labyrinth_game.player_actions import show_inventory, move_player, take_item
+
 def main():
     print("Добро пожаловать в Лабиринт сокровищ!")
     game_state = {
@@ -10,13 +12,45 @@ def main():
         'steps_taken': 0 # Количество шагов
   }
     
+    def process_command(game_state, command):
+        
+        parts = command.strip().lower().split(maxsplit=1)
+        action = parts[0]
+        arg = parts[1] if len(parts) > 1 else None
+        match action:
+            case 'look' | 'осмотреться':
+                describe_current_room(game_state)
+
+            case 'inventory' | 'инвентарь':
+                show_inventory(game_state)
+
+            case 'go' | 'идти':
+                if arg:
+                    move_player(game_state, arg)
+                else:
+                    print("Укажите направление через пробел 'go..': north, south, east, west")
+
+            case 'take' | 'взять':
+                if arg:
+                    take_item(game_state, arg)
+                else:
+                    print("Укажите предмет, который хотите взять")
+
+            case 'quit' | 'exit' | 'выход':
+                print("Вы покидаете лабиринт.")
+                game_state['game_over'] = True
+
+            case _:
+                print("Неизвестная команда. Доступные: look, go, take, inventory, quit")
+
+
 
     describe_current_room(game_state)
-    while True:
-        command_player = input("\nВведите команду: ").strip().lower()
 
-        return print('Игра окончена')
-
+    while not game_state['game_over']:
+        command_player = input("\nВведите команду: ")
+        process_command(game_state, command_player)
+    
 
 if __name__ == "__main__":
     main()

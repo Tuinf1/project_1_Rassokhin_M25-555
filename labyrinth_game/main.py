@@ -11,13 +11,11 @@ def main():
   }
     
 
-    one_exict = describe_current_room(game_state)
-    print(one_exict)
-
+    describe_current_room(game_state)
     while True:
         command_player = input("\nВведите команду: ").strip().lower()
 
-        return     
+        return print('Игра окончена')
 
 
 if __name__ == "__main__":

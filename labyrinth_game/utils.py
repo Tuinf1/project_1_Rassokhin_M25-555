@@ -1,4 +1,5 @@
 #  для вспомогательных функций.
+import math
 from labyrinth_game.constants import ROOMS
 
 def describe_current_room(game_state):
@@ -93,3 +94,66 @@ def show_help():
     print("  solve           - попытаться решить загадку в комнате")
     print("  quit            - выйти из игры")
     print("  help            - показать это сообщение") 
+
+
+def pseudo_random(seed: int, modulo: int) -> int:
+    """
+    Генератор псевдослучайных чисел на основе синуса.
+    Возвращает целое число в диапазоне [0, modulo).
+    """
+    x = math.sin(seed * 12.9898) * 43758.5453
+    fractional = x - math.floor(x)
+    return int(fractional * modulo)
+
+def trigger_trap(game_state):
+    
+    print("⚠️ Ловушка активирована! Пол начал дрожать...")
+    inventory = game_state.get('inventory', [])
+
+    #  Если есть предметы — теряем случайный
+    if inventory:
+        idx = pseudo_random(game_state['steps_taken'], len(inventory))
+        lost_item = inventory.pop(idx)
+        print(f"Вы потеряли предмет: {lost_item}!")
+    else:
+        #  Если инвентарь пуст — шанс умереть
+        roll = pseudo_random(game_state['steps_taken'], 10)
+        if roll < 3:
+            print("💀 Ловушка оказалась смертельной! Вы погибли.")
+            game_state['game_over'] = True
+        else:
+            print("😰 Вам повезло — вы чудом уцелели!")
+
+    return game_state
+
+def random_event(game_state):
+
+    # Проверяем вероятность срабатывания (10%)
+    
+    if pseudo_random(game_state['steps_taken'], 2) != 0:
+        print('efe')
+        return  # событие не происходит
+    print('ловушка')
+    current_room = game_state['current_room']
+    inventory = game_state.get('inventory', [])
+    room_data = ROOMS[current_room]
+    # print(room_data)
+
+    event_type = pseudo_random(game_state['steps_taken'] + 1, 3)
+
+    if event_type == 0:
+        # 🪙 Находка
+        print("Вы замечаете что-то блестящее на полу — это монетка!")
+        room_data['items'].append('coin')
+
+    elif event_type == 1:
+        # 😱 Испуг
+        print("Вы слышите странный шорох где-то поблизости...")
+        if 'sword' in inventory:
+            print("Вы выхватываете меч — существо отступает в темноту.")
+
+    elif event_type == 2:
+        # ⚠️ Ловушка (только в trap_room без факела)
+        if current_room == 'trap_room' and 'torch' not in inventory:
+            print("Вы оступились... что-то щёлкнуло под ногой!")
+            trigger_trap(game_state)

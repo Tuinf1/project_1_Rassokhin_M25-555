@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from labyrinth_game.constants import ROOMS
-from labyrinth_game.utils import describe_current_room, attempt_open_treasure, solve_puzzle
+from labyrinth_game.constants import ROOMS, COMMANDS
+from labyrinth_game.utils import describe_current_room, attempt_open_treasure, solve_puzzle, show_help
 from labyrinth_game.player_actions import show_inventory, move_player, take_item
 
 def main():
@@ -15,16 +15,22 @@ def main():
     def process_command(game_state, command):
         
         parts = command.strip().lower().split(maxsplit=1)
-        action = parts[0]
-        arg = parts[1] if len(parts) > 1 else None
+        action = parts[0] 
+        arg = parts[1] if len(parts) > 1 else action
+        # print(arg)
+        # print(action)
+        # directions = ['north', 'south', 'east', 'west']
+
         match action:
+            case 'help':
+                show_help(COMMANDS)
             case 'look' | 'осмотреться':
                 describe_current_room(game_state)
 
             case 'inventory' | 'инвентарь':
                 show_inventory(game_state)
 
-            case 'go' | 'идти':
+            case 'go' | 'north' | 'south' | 'east' | 'west':
                 if arg:
                     move_player(game_state, arg)
                 else:

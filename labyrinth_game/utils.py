@@ -88,7 +88,7 @@ def attempt_open_treasure(game_state):
         return
 
     # 3️⃣ Предложение ввести код
-    use_code = input("Сундук заперт. У вас нет ключа. Хотите попробовать ввести код? (да/нет) ").strip().lower()
+    use_code = input("Сундук заперт. У вас нет ключа. Хотите попробовать решить загадку? (да/нет) ").strip().lower()
     if use_code != 'да':
         print("Вы отступаете от сундука.")
         return
@@ -98,8 +98,9 @@ def attempt_open_treasure(game_state):
     room_puzzle = room_data.get('puzzle')
 
     question, correct_code = room_puzzle
-    user_code = input(f"{question}\nВведите код: ").strip()
-    if user_code == correct_code:
+
+    user_code = input(f"{question}\nВведите код: ").strip().lower()
+    if user_code == correct_code or user_code == 'десять':
         print("Код верный! Сундук открыт!")
         room_items.remove('treasure_chest')
         print("В сундуке сокровище! Вы победили!")

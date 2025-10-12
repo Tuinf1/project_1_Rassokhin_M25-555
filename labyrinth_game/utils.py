@@ -1,6 +1,9 @@
-#  для вспомогательных функций.
+# для вспомогательных функций
+
 import math
-from labyrinth_game.constants import ROOMS
+
+from labyrinth_game.constants import EVENT_PROBABILITY, ROOMS, TRIGGER_PROBABILITY
+
 
 def describe_current_room(game_state):
     room_name = game_state['current_room']
@@ -38,10 +41,6 @@ def solve_puzzle(game_state):
     }
         user_answer = input(f"{question}\nВаш ответ: ").strip().lower()
         valid_answers = alternatives.get(answer.lower(), [answer.lower()])
-
-        # # удалить
-        # print(valid_answers)
-
 
         if user_answer in valid_answers:
             print("Правильно! Загадка решена.")
@@ -88,7 +87,8 @@ def attempt_open_treasure(game_state):
         return
 
     # 3️⃣ Предложение ввести код
-    use_code = input("Сундук заперт. У вас нет ключа. Хотите попробовать решить загадку? (да/нет) ").strip().lower()
+    use_code = input("Сундук заперт. У вас нет ключа. " \
+    "Хотите попробовать решить загадку? (да/нет) ").strip().lower()
     if use_code != 'да':
         print("Вы отступаете от сундука.")
         return
@@ -148,7 +148,7 @@ def trigger_trap(game_state):
         print(f"Вы потеряли предмет: {lost_item}!")
     else:
         #  Если инвентарь пуст — шанс умереть
-        roll = pseudo_random(game_state['steps_taken'], 10)
+        roll = pseudo_random(game_state['steps_taken'], TRIGGER_PROBABILITY)
         if roll < 3:
             print("💀 Ловушка оказалась смертельной! Вы погибли.")
             game_state['game_over'] = True
@@ -161,8 +161,8 @@ def random_event(game_state):
 
     # Проверяем вероятность срабатывания (10%)
     
-    if pseudo_random(game_state['steps_taken'], 7) != 0:
-        # print('efe')
+    if pseudo_random(game_state['steps_taken'], EVENT_PROBABILITY) != 0:
+        
         return  # событие не происходит
     print('ОЙ-ОЙ, кажется вы наткнулись на ловушку!')
     current_room = game_state['current_room']
@@ -185,7 +185,8 @@ def random_event(game_state):
             weapon = 'меч' if 'sword' in inventory else 'кинжал'
             print(f"Вы выхватываете {weapon} — существо отступает в темноту.")
         else:
-            print('Вы в страхе убежали от противника, но никто этого не видел, можно сказать, что этого не было')
+            print('Вы в страхе убежали от противника, но никто' \
+            ' этого не видел, можно сказать, что этого не было')
     elif event_type == 2:
         # ⚠️ Ловушка (только в trap_room без факела)
         if current_room == 'trap_room' and 'torch' not in inventory:

@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
-from labyrinth_game.constants import ROOMS, COMMANDS
-from labyrinth_game.utils import describe_current_room, attempt_open_treasure, solve_puzzle, show_help
-from labyrinth_game.player_actions import show_inventory, move_player, take_item
+from labyrinth_game.constants import COMMANDS
+from labyrinth_game.player_actions import move_player, show_inventory, take_item
+from labyrinth_game.utils import (
+    attempt_open_treasure,
+    describe_current_room,
+    show_help,
+    solve_puzzle,
+)
+
 
 def main():
     print("Добро пожаловать в Лабиринт сокровищ!")
@@ -34,7 +40,8 @@ def main():
                 if arg:
                     move_player(game_state, arg)
                 else:
-                    print("Укажите направление через пробел 'go..': north, south, east, west")
+                    print("Укажите направление через пробел 'go..':" \
+                    " north, south, east, west")
 
             case 'take' | 'взять':
                 if arg:
@@ -48,7 +55,8 @@ def main():
                 else:
                     solve_puzzle(game_state)
             case 'use':
-                if arg == 'treasure_chest' and game_state['current_room'] == 'treasure_room':
+                if arg == 'treasure_chest' and game_state['current_' \
+                'room'] == 'treasure_room':
                     attempt_open_treasure(game_state)
                 else:
                     print("У вас нет нужного предмета для treasure_room.")

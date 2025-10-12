@@ -16,8 +16,7 @@ def show_inventory(game_state):
 
 def get_input(prompt="> "):
     try:
-        
-        z = None
+        None
     except (KeyboardInterrupt, EOFError):
         print("\nВыход из игры.")
         return "quit" 
@@ -47,7 +46,8 @@ def move_player(game_state, direction: str):
     # 🔒 Проверка: если это комната сокровищ
     if next_room == 'treasure_room':
         if 'rusty_key' in game_state['player_inventory']:
-            print("\nВы используете найденный ключ, чтобы открыть путь в комнату сокровищ.")
+            print("\nВы используете найденный ключ, " \
+            "чтобы открыть путь в комнату сокровищ.")
             game_state['current_room'] = next_room
             game_state['steps_taken'] += 1
 

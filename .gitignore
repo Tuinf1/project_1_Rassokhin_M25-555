@@ -1,9 +1,4 @@
-# Virtual Environment
 .venv/
-venv/
-env/
-
-# Distribution folders
+.ruff_cache/
+labyrinth_game/__pycache__/
 dist/
-build/
-*.egg-info/

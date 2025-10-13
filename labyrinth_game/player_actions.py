@@ -6,37 +6,33 @@ from labyrinth_game.utils import describe_current_room, random_event
 
 
 def show_inventory(game_state):
+    """Выводит информацию о содержимом инвенторя игрока"""
+
     player_inventory = game_state['player_inventory']
 
     if not player_inventory:
         print('Инвентарь игрока пуст')
     else:
         print('В инвентаре:', ', '.join(player_inventory))
-# 
+
 
 def get_input(prompt="> "):
+    """Обрабатывает ввод игрока: при ошибках завершает игру, иначе возвращает введённую команду."""
+
     try:
-        None
+        return input(prompt)
     except (KeyboardInterrupt, EOFError):
         print("\nВыход из игры.")
         return "quit" 
 
 # Функция перемещения 2
 def move_player(game_state, direction: str):
+    """ Перемещает игрока в заданном направлении, если выход существует.
+    Проверяет наличие ключа для входа в комнату сокровищ."""
+
+
     current_room = game_state['current_room']
     room_data = ROOMS[current_room]
-
-     # Проверяем, есть ли выход в указанном направлении
-    
-
-        # # Меняем текущую комнату
-        # 
-        # game_state['current_room'] = new_room
-        # game_state['steps_taken'] += 1
-
-        # random_event(game_state)
-        # # Показываем описание новой комнаты
-        # describe_current_room(game_state)
 
     if direction not in room_data.get('exits', {}):
         print("Нельзя пойти в этом направлении.")
@@ -76,6 +72,9 @@ def move_player(game_state, direction: str):
 
 # Функция взятия предмета 3
 def take_item(game_state, item_name):
+    """ Добавление предметов в инвентарь игрок и 
+    удаление предмета из комнаты """
+
     current_room = game_state['current_room']
     room_data = ROOMS[current_room] 
     room_items = room_data.get('items', [])

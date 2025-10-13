@@ -6,6 +6,9 @@ from labyrinth_game.constants import EVENT_PROBABILITY, ROOMS, TRIGGER_PROBABILI
 
 
 def describe_current_room(game_state):
+    """Выводит описание текущей комнаты: её детали, 
+    предметы, выходы и наличие загадки."""
+
     room_name = game_state['current_room']
     room = ROOMS[room_name]
     print(f"\n== {room_name.upper()} ==")
@@ -25,6 +28,8 @@ def describe_current_room(game_state):
         print("Кажется, здесь есть загадка (используйте команду solve).")
 
 def solve_puzzle(game_state):
+    """Решает загадку в текущей комнате 
+    и выдаёт награду за правильный ответ."""
 
     current_room = game_state['current_room']
     room_data = ROOMS[current_room] 
@@ -68,6 +73,9 @@ def solve_puzzle(game_state):
 
 
 def attempt_open_treasure(game_state):
+    """"Пытается открыть сундук с сокровищем: 
+    проверяет наличие ключа или предлагает разгадать код """
+
     current_room = game_state['current_room']
     room_data = ROOMS[current_room]
     room_items = room_data.get('items', [])
@@ -121,6 +129,8 @@ def attempt_open_treasure(game_state):
 
 
 def show_help(commands):
+    """ Вызывает список доступных команд """
+
     print("\nСписок доступных команд:")
     for cmd, desc in commands.items():
         print(f"{cmd:<16} — {desc}")
@@ -137,6 +147,10 @@ def pseudo_random(seed: int, modulo: int) -> int:
     return int(fractional * modulo)
 
 def trigger_trap(game_state):
+    """Активирует ловушку: игрок теряет 
+    предмет или погибает с вероятностью."""
+
+
     
     print("⚠️ Ловушка активирована! Пол начал дрожать...")
     inventory = game_state.get('inventory', [])
@@ -159,7 +173,8 @@ def trigger_trap(game_state):
 
 def random_event(game_state):
 
-    # Проверяем вероятность срабатывания (10%)
+        """С вероятностью 10% вызывает случайное событие:
+    находку, шум врага или активацию ловушки."""
     
     if pseudo_random(game_state['steps_taken'], EVENT_PROBABILITY) != 0:
         

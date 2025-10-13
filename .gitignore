@@ -1,5 +1,6 @@
 .venv/
+venv/
+.vscode
 .ruff_cache/
 labyrinth_game/__pycache__/
 dist/
-structure.txt/

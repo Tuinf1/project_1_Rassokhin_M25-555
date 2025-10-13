@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from labyrinth_game.constants import COMMANDS
-from labyrinth_game.player_actions import move_player, show_inventory, take_item
+from labyrinth_game.player_actions import move_player, show_inventory, take_item, get_input
 from labyrinth_game.utils import (
     attempt_open_treasure,
     describe_current_room,
@@ -10,16 +10,24 @@ from labyrinth_game.utils import (
 
 
 def main():
+
+    """Основной цикл игры: инициализирует состояние,
+      описывает комнату и обрабатывает команды игрока."""
+
     print("Добро пожаловать в Лабиринт сокровищ!")
+
     game_state = {
         'player_inventory': [], # Инвентарь игрока
         'current_room': 'entrance', # Текущая комната
         'game_over': False, # Значения окончания игры
         'steps_taken': 0 # Количество шагов
-  }
+    }
     
     def process_command(game_state, command):
-        
+        """Обрабатывает введённую игроком команду, 
+        изменяя состояние игры в зависимости от действия."""
+
+
         parts = command.strip().lower().split(maxsplit=1)
         action = parts[0] 
         arg = parts[1] if len(parts) > 1 else action
@@ -75,7 +83,7 @@ def main():
     describe_current_room(game_state)
 
     while not game_state['game_over']:
-        command_player = input("\nВведите команду: ")
+        command_player = get_input("\nВведите команду: ")
         process_command(game_state, command_player)
     
 

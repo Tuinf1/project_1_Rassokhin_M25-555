@@ -71,8 +71,10 @@ def main():
                 if arg == 'treasure_chest' and game_state['current_' \
                 'room'] == 'treasure_room':
                     attempt_open_treasure(game_state)
-                else:
+                elif arg == 'treasure_chest':
                     print("У вас нет нужного предмета для treasure_room.")
+                else:
+                    print('В комнате нет предметов с которыми можно взаимодействовать')
 
 
 

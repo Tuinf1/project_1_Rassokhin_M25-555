@@ -173,11 +173,11 @@ def trigger_trap(game_state):
 
 def random_event(game_state):
 
-        """С вероятностью 10% вызывает случайное событие:
+    """С вероятностью 10% вызывает случайное событие:
     находку, шум врага или активацию ловушки."""
     
     if pseudo_random(game_state['steps_taken'], EVENT_PROBABILITY) != 0:
-        
+    
         return  # событие не происходит
     print('ОЙ-ОЙ, кажется вы наткнулись на ловушку!')
     current_room = game_state['current_room']
